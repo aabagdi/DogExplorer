@@ -9,8 +9,30 @@ import SwiftUI
 
 struct BreedView<CameraModel: Camera>: View {
   @State var camera: CameraModel
+  @State var viewModel = BreedViewModel()
   
   var body: some View {
-    Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+    GeometryReader { g in
+      VStack {
+        if let photo = camera.returnPhoto() {
+          if let image = UIImage(data: photo) {
+            Image(uiImage: image)
+              .resizable()
+              .aspectRatio(contentMode: .fit)
+              .clipped()
+              .ignoresSafeArea()
+              .clipShape(RoundedRectangle(cornerRadius: 10))
+          }
+        }
+        if let breed = viewModel.breed {
+          Text("This dog is a \(breed)!")
+        } else {
+          ProgressView()
+        }
+      }
+    }
+    .onAppear {
+      viewModel.identifyBreed(photo: camera.returnPhoto())
+    }
   }
 }

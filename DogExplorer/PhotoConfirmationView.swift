@@ -12,13 +12,13 @@ struct PhotoConfirmationView<CameraModel: Camera>: View {
   @Binding var isPresented: Bool
   
   var body: some View {
-    GeometryReader { geometry in
+    GeometryReader { g in
       if let photo = camera.returnPhoto() {
         if let image = UIImage(data: photo) {
           Image(uiImage: image)
             .resizable()
             .aspectRatio(contentMode: .fill)
-            .frame(width: geometry.size.width, height: geometry.size.height)
+            .frame(width: g.size.width, height: g.size.height)
             .clipped()
             .ignoresSafeArea()
         } else {
