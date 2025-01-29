@@ -42,7 +42,7 @@ class CameraModel: Camera {
     }
   }
   
-  var photo: Photo?
+  private var photo: Photo?
   
   init() {}
   
@@ -80,6 +80,10 @@ class CameraModel: Camera {
     } catch {
       self.error = error
     }
+  }
+  
+  func returnPhoto() -> Data? {
+    return photo?.data
   }
   
   func clearPhoto() {

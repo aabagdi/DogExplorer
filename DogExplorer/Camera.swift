@@ -30,6 +30,8 @@ protocol Camera: AnyObject {
   
   func capturePhoto() async
   
+  func returnPhoto() -> Data?
+  
   func clearPhoto()
   
   var shouldFlashScreen: Bool { get }

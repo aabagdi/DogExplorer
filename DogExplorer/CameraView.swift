@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CameraView<CameraModel: Camera>: View {
   @State var camera: CameraModel
+  //@State var isPresented = false
   
   var body: some View {
     ZStack {
@@ -17,11 +18,8 @@ struct CameraView<CameraModel: Camera>: View {
       
       VStack {
         Spacer()
-        ZStack {  // Use ZStack for true centering
-          // Center button
+        ZStack {
           CameraButtonView(camera: camera)
-          
-          // Overlay switch camera at right edge
           HStack {
             Spacer()
             SwitchCameraButton(camera: camera)
@@ -31,7 +29,13 @@ struct CameraView<CameraModel: Camera>: View {
         .padding(.bottom, 30)
       }
     }
+    /*.onChange(of: camera.returnPhoto()) {
+      isPresented.toggle()
+    }*/
     .background(Color.black)
+    /*.sheet(isPresented: $isPresented) {
+      PhotoConfirmationView(camera: $camera)
+    }*/
     .task {
       await camera.start()
     }
