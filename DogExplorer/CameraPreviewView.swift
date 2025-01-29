@@ -18,16 +18,21 @@ struct CameraPreviewView: UIViewRepresentable {
   
   func makeUIView(context: Context) -> PreviewView {
     let preview = PreviewView()
+    preview.previewLayer.videoGravity = .resizeAspectFill // Add this line
     source.connect(to: preview)
     return preview
   }
   
-  func updateUIView(_ previewView: PreviewView, context: Context) {}
+  func updateUIView(_ previewView: PreviewView, context: Context) {
+    // Update frame on bounds change
+    previewView.previewLayer.frame = previewView.bounds
+  }
   
   class PreviewView: UIView, PreviewTarget {
     
     init() {
       super.init(frame: .zero)
+      backgroundColor = .black // Add this to ensure no transparency
     }
     
     required init?(coder: NSCoder) {
@@ -40,6 +45,12 @@ struct CameraPreviewView: UIViewRepresentable {
     
     var previewLayer: AVCaptureVideoPreviewLayer {
       layer as! AVCaptureVideoPreviewLayer
+    }
+    
+    override func layoutSubviews() {
+      super.layoutSubviews()
+      // Ensure layer fills the view on layout changes
+      previewLayer.frame = bounds
     }
     
     nonisolated func setSession(_ session: AVCaptureSession) {
