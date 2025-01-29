@@ -31,6 +31,7 @@ struct CameraView<CameraModel: Camera>: View {
     }
     .task {
       await camera.start()
+      camera.clearPhoto()
     }
     .fullScreenCover(isPresented: $showPhotoConfirmation) {
       NavigationStack {
@@ -48,7 +49,7 @@ struct CameraView<CameraModel: Camera>: View {
                 Text("Proceed")
               }
               .navigationDestination(for: String.self) { _ in
-                BreedView(camera: camera)
+                BreedView(photo: camera.returnPhoto())
               }
             }
           }

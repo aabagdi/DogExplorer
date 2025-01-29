@@ -9,11 +9,11 @@ import SwiftUI
 
 @main
 struct DogExplorerApp: App {
-  @State private var camera = CameraModel()
+  //@State private var camera = CameraModel()
   
   var body: some Scene {
     WindowGroup {
-      CameraView(camera: camera)
+      MainView()
     }
   }
 }

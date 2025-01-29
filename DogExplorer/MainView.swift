@@ -6,12 +6,33 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct MainView: View {
+  @State private var viewModel = MainViewModel()
+  
   var body: some View {
-    Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+    NavigationStack {
+      VStack {
+        Text("Welcome to Dog Explorer!")
+        
+        HStack {
+          PhotosPicker(selection: $viewModel.photoPickerItem, matching: .images) {
+            Label("Select a photo", systemImage: "photo")
+          }
+        }
+        .tint(.blue)
+        .controlSize(.large)
+        .buttonStyle(.borderedProminent)
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .navigationDestination(item: $viewModel.selectedImage) { image in
+          BreedView(photo: image)
+        }
+      }
+    }
   }
 }
+
 
 #Preview {
   MainView()

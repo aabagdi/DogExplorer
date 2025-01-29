@@ -7,4 +7,4 @@
 
 import Foundation
 
-//extension Data: Sendable {}
+extension Data: Sendable {}
