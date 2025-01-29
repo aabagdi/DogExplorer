@@ -18,8 +18,11 @@ struct SwitchCameraButton<CameraModel: Camera>: View {
             }
         } label: {
             Image(systemName: "arrow.triangle.2.circlepath")
+                .foregroundColor(.white)
+                .font(.system(size: 20))
+                .frame(width: 64, height: 64)
+                .contentShape(Rectangle())
         }
-        .frame(width: 64, height: 64)
         .allowsHitTesting(!camera.isSwitchingVideoDevices)
     }
 }

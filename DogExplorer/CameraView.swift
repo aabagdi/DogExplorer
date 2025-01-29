@@ -12,33 +12,25 @@ struct CameraView<CameraModel: Camera>: View {
   
   var body: some View {
     ZStack {
-      // Full screen camera preview
       CameraPreviewView(source: camera.previewSource)
-        .ignoresSafeArea(.all) // Explicitly ignore all safe areas
-        .edgesIgnoringSafeArea(.all) // Belt and suspenders approach
+        .edgesIgnoringSafeArea(.all)
       
-      // Controls overlay
       VStack {
         Spacer()
-        
-        // Bottom control bar
-        HStack {
-          // Empty spacer for left side
-          Spacer()
-          
-          // Centered capture button
+        ZStack {  // Use ZStack for true centering
+          // Center button
           CameraButtonView(camera: camera)
           
-          // Right side spacer and switch camera
-          Spacer()
-          
-          SwitchCameraButton(camera: camera)
-            .padding(.trailing, 20)
+          // Overlay switch camera at right edge
+          HStack {
+            Spacer()
+            SwitchCameraButton(camera: camera)
+              .padding(20)
+          }
         }
         .padding(.bottom, 30)
       }
     }
-    .edgesIgnoringSafeArea(.all) // Ensure the ZStack also ignores safe areas
     .background(Color.black)
     .task {
       await camera.start()
