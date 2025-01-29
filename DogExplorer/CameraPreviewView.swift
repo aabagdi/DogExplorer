@@ -24,7 +24,6 @@ struct CameraPreviewView: UIViewRepresentable {
   }
   
   func updateUIView(_ previewView: PreviewView, context: Context) {
-    // Update frame on bounds change
     previewView.previewLayer.frame = previewView.bounds
   }
   
@@ -49,7 +48,6 @@ struct CameraPreviewView: UIViewRepresentable {
     
     override func layoutSubviews() {
       super.layoutSubviews()
-      // Ensure layer fills the view on layout changes
       previewLayer.frame = bounds
     }
     

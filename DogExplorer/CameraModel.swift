@@ -42,7 +42,7 @@ class CameraModel: Camera {
     }
   }
   
-  private var photo: Photo?
+  private var photo: Data?
   
   init() {}
   
@@ -76,14 +76,13 @@ class CameraModel: Camera {
     do {
       let photo = try await captureManager.capturePhoto()
       self.photo = photo
-      print(self.photo)
     } catch {
       self.error = error
     }
   }
   
   func returnPhoto() -> Data? {
-    return photo?.data
+    return photo
   }
   
   func clearPhoto() {

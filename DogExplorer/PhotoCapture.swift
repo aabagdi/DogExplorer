@@ -22,7 +22,7 @@ final class PhotoCapture: OutputService {
     photoOutput.maxPhotoQualityPrioritization = .quality
   }
   
-  func capturePhoto() async throws -> Photo {
+  func capturePhoto() async throws -> Data {
     try await withCheckedThrowingContinuation { continuation in
       let delegate = PhotoCaptureDelegate(continuation: continuation)
       monitorProgress(of: delegate)
@@ -43,7 +43,7 @@ final class PhotoCapture: OutputService {
 }
 
 private class PhotoCaptureDelegate: NSObject, AVCapturePhotoCaptureDelegate {
-  private let continuation: CheckedContinuation<Photo, Error>
+  private let continuation: CheckedContinuation<Data, Error>
   private var isProxyPhoto = false
   private var photoData: Data?
   private let logger = Logger()
@@ -51,7 +51,7 @@ private class PhotoCaptureDelegate: NSObject, AVCapturePhotoCaptureDelegate {
   let activityStream: AsyncStream<CaptureActivity>
   private let activityContinuation: AsyncStream<CaptureActivity>.Continuation
   
-  init(continuation: CheckedContinuation<Photo, Error>) {
+  init(continuation: CheckedContinuation<Data, Error>) {
     self.continuation = continuation
     let (activityStream, activityContinuation) = AsyncStream.makeStream(of: CaptureActivity.self)
     self.activityStream = activityStream
@@ -97,9 +97,7 @@ private class PhotoCaptureDelegate: NSObject, AVCapturePhotoCaptureDelegate {
       continuation.resume(throwing: PhotoError.noData)
       return
     }
-    
-    let photo = Photo(data: photoData, isProxy: isProxyPhoto)
-    continuation.resume(returning: photo)
+    continuation.resume(returning: photoData)
   }
 }
 

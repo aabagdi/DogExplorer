@@ -9,18 +9,25 @@ import SwiftUI
 
 struct PhotoConfirmationView<CameraModel: Camera>: View {
   @Binding var camera: CameraModel
-    
-    var body: some View {
-      if let photoData = camera.returnPhoto() {
-            if let image = UIImage(data: photoData) {
-                Image(uiImage: image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-            } else {
-                Text("Failed to load image")
-            }
+  @Binding var isPresented: Bool
+  
+  var body: some View {
+    GeometryReader { geometry in
+      if let photo = camera.returnPhoto() {
+        if let image = UIImage(data: photo) {
+          Image(uiImage: image)
+            .resizable()
+            .aspectRatio(contentMode: .fill)
+            .frame(width: geometry.size.width, height: geometry.size.height)
+            .clipped()
+            .ignoresSafeArea()
         } else {
-            ProgressView()
+          Text("Failed to load image")
         }
+      } else {
+        ProgressView()
+      }
     }
+    .ignoresSafeArea()
+  }
 }

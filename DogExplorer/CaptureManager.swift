@@ -157,7 +157,6 @@ actor CaptureManager {
     rotationObservers.append(
       rotationCoordinator.observe(\.videoRotationAngleForHorizonLevelPreview, options: .new) { [weak self] _, change in
         guard let self, let angle = change.newValue else { return }
-        // Update the capture preview rotation.
         Task { await self.updatePreviewRotation(angle) }
       }
     )
@@ -165,7 +164,6 @@ actor CaptureManager {
     rotationObservers.append(
       rotationCoordinator.observe(\.videoRotationAngleForHorizonLevelCapture, options: .new) { [weak self] _, change in
         guard let self, let angle = change.newValue else { return }
-        // Update the capture preview rotation.
         Task { await self.updateCaptureRotation(angle) }
       }
     )
@@ -230,7 +228,7 @@ actor CaptureManager {
     device.unlockForConfiguration()
   }
 
-  func capturePhoto() async throws -> Photo {
+  func capturePhoto() async throws -> Data {
     try await photoCapture.capturePhoto()
   }
   
@@ -253,7 +251,7 @@ actor CaptureManager {
       for await reason in NotificationCenter.default.notifications(named: AVCaptureSession.wasInterruptedNotification)
         .compactMap({ $0.userInfo?[AVCaptureSessionInterruptionReasonKey] as AnyObject? })
         .compactMap({ AVCaptureSession.InterruptionReason(rawValue: $0.integerValue) }) {
-        isInterrupted = [.audioDeviceInUseByAnotherClient, .videoDeviceInUseByAnotherClient].contains(reason)
+        isInterrupted = [.videoDeviceInUseByAnotherClient].contains(reason)
       }
     }
     

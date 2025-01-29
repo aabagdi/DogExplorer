@@ -10,15 +10,14 @@ import AppIntents
 import os
 
 struct DogExplorerCamCaptureIntent: CameraCaptureIntent {
-
-    typealias AppContext = CameraState
-    
-    static let title: LocalizedStringResource = "DogExplorerCamCaptureIntent"
-    static let description: IntentDescription = IntentDescription("Identify dog breeds via the camera using Dog Explorer.")
-
-    @MainActor
-    func perform() async throws -> some IntentResult {
-        os.Logger().debug("DogExplorer capture intent performed successfully.")
-        return .result()
-    }
+  typealias AppContext = CameraState
+  
+  static let title: LocalizedStringResource = "DogExplorerCamCaptureIntent"
+  static let description: IntentDescription = IntentDescription("Identify dog breeds via the camera using Dog Explorer.")
+  
+  @MainActor
+  func perform() async throws -> some IntentResult {
+    os.Logger().debug("DogExplorer capture intent performed successfully.")
+    return .result()
+  }
 }
