@@ -12,57 +12,99 @@ struct MainView: View {
   @State private var viewModel = MainViewModel()
   @State private var path = NavigationPath()
   @State private var camera = CameraModel()
+  @State private var tapped = false
+  private var bark = AudioPlayer()
   
   var body: some View {
     NavigationStack(path: $path) {
-      VStack {
-        Text("Welcome to Dog Explorer!")
+      ZStack {
+        LinearGradient(gradient: Gradient(colors: [.pink.opacity(0.2), .blue.opacity(0.2), .purple.opacity(0.2)]),
+                       startPoint: .topLeading,
+                       endPoint: .bottomTrailing)
+        .ignoresSafeArea()
         
-        HStack {
-          PhotosPicker(selection: $viewModel.photoPickerItem, matching: .images) {
-            Label("Select a photo", systemImage: "photo")
+        VStack {
+          Spacer()
+          
+          VStack {
+            LinearGradient(
+              colors: [.red, .purple, .pink, .blue],
+              startPoint: .leading,
+              endPoint: .trailing
+            )
+            .mask(
+              Text("Dog Explorer!")
+                .font(Font.system(size: 46, weight: .bold))
+                .multilineTextAlignment(.center)
+            )
+            
+            Spacer()
+            
+            Text("🐶")
+              .font(.largeTitle)
+              .multilineTextAlignment(.center)
+              .foregroundStyle(.white)
+              .scaleEffect(tapped ? 6.15 : 5.0)
+              .animation(.spring(response: 0.35, dampingFraction: 0.15), value: tapped)
+              .font(.largeTitle)
+              .multilineTextAlignment(.center)
+              .onTapGesture {
+                self.bark.play(sound: "Dog Bark")
+                tapped.toggle()
+                Task {
+                  try await Task.sleep(nanoseconds: 200_000_000)
+                  tapped.toggle()
+                }
+              }
+              .frame(maxHeight: .infinity)
           }
-        }
-        .tint(.blue)
-        .controlSize(.large)
-        .buttonStyle(.borderedProminent)
-        .clipShape(RoundedRectangle(cornerRadius: 10))
-        .onChange(of: viewModel.photoPickerItem) { _, newItem in
-          Task {
-            await viewModel.setImage(from: newItem)
+          .padding()
+          
+          Spacer()
+          
+          Button("Take a photo", systemImage: "camera") {
+            path.append(NavigationDestination.camera)
           }
-        }
-        .onChange(of: viewModel.selectedImage) { _, newImage in
-          if let newImage {
-            path.append(newImage)
+          .buttonStyle(GradientButtonStyle(colors: [.blue, .purple]))
+          
+          HStack {
+            PhotosPicker(selection: $viewModel.photoPickerItem, matching: .images) {
+              Label("Select a photo", systemImage: "photo")
+            }
           }
-        }
-        .navigationDestination(for: Data.self) { image in
-          BreedView(photo: image, path: $path)
-        }
-        
-        Button("Take a photo", systemImage: "camera") {
-          path.append(NavigationDestination.camera)
-        }
-        .tint(.blue)
-        .controlSize(.large)
-        .buttonStyle(.borderedProminent)
-        .clipShape(RoundedRectangle(cornerRadius: 10))
-        
-        Button("Discovered breeds", systemImage: "dog") {
-          path.append(NavigationDestination.breedList)
-        }
-        .tint(.blue)
-        .controlSize(.large)
-        .buttonStyle(.borderedProminent)
-        .clipShape(RoundedRectangle(cornerRadius: 10))
-        
-        .navigationDestination(for: NavigationDestination.self) { destination in
-          switch destination {
-          case .camera:
-            CameraView(camera: camera, path: $path)
-          case .breedList:
-            BreedListView()
+          .buttonStyle(GradientButtonStyle(colors: [.purple, .pink]))
+          .onChange(of: viewModel.photoPickerItem) { _, newItem in
+            Task {
+              await viewModel.setImage(from: newItem)
+            }
+          }
+          .onChange(of: viewModel.selectedImage) { _, newImage in
+            if let newImage {
+              path.append(newImage)
+            }
+          }
+          .navigationDestination(for: Data.self) { image in
+            BreedView(photo: image, path: $path)
+          }
+          
+          Button("Discovered breeds", systemImage: "dog") {
+            path.append(NavigationDestination.breedList)
+          }
+          .buttonStyle(GradientButtonStyle(colors: [.pink, .orange]))
+          
+          Button("Credits", systemImage: "list.bullet") {
+            path.append(NavigationDestination.credits)
+          }
+          .buttonStyle(GradientButtonStyle(colors: [.orange, .orange]))
+          .navigationDestination(for: NavigationDestination.self) { destination in
+            switch destination {
+            case .camera:
+              CameraView(camera: camera, path: $path)
+            case .breedList:
+              BreedListView()
+            case .credits:
+              CreditsView()
+            }
           }
         }
       }

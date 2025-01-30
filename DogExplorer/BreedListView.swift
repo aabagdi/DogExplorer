@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import CoreML
 import SwiftUI
 
 struct BreedListView: View {
@@ -20,22 +19,34 @@ struct BreedListView: View {
   }
   
   var body: some View {
-    List {
-      if collectedBreeds.isEmpty {
-        Text("No breeds discovered yet!")
-          .foregroundColor(.secondary)
-      } else {
-        ForEach(collectedBreeds, id: \.self) { breed in
-          HStack {
-            Image(systemName: "dog")
-              .foregroundColor(.blue)
-            Text(breed)
-              .font(.body)
+    ZStack {
+      LinearGradient(gradient: Gradient(colors: [.pink.opacity(0.2), .blue.opacity(0.2), .purple.opacity(0.2)]),
+                     startPoint: .topLeading,
+                     endPoint: .bottomTrailing)
+      .ignoresSafeArea()
+      VStack {
+        List {
+          if collectedBreeds.isEmpty {
+            Text("No breeds discovered yet!")
+              .foregroundColor(.secondary)
+          } else {
+            ForEach(collectedBreeds, id: \.self) { breed in
+              HStack {
+                Image(systemName: "dog")
+                  .foregroundColor(.blue)
+                Text(breed)
+                  .font(.body)
+              }
+            }
           }
         }
+        .scrollContentBackground(.hidden)
+        .navigationTitle("Discovered Breeds")
+        .navigationBarTitleDisplayMode(.large)
+        
+        Text("\(collectedBreeds.count) breeds found out of 122")
+          .font(.footnote)
       }
     }
-    .navigationTitle("Discovered Breeds")
-    .navigationBarTitleDisplayMode(.large)
   }
 }

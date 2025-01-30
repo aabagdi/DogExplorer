@@ -12,9 +12,9 @@ struct BreedView: View {
   var photo: Data?
   @AppStorage("breedList") var breedList = Data()
   
-  // MARK: - View States
   @State private var isImageLoading = false
   @State private var showRetryButton = false
+  @State private var isDismissing = false  // New state to track dismissal
   
   @Binding var path: NavigationPath
   
@@ -34,13 +34,18 @@ struct BreedView: View {
   
   var body: some View {
     GeometryReader { geometry in
-      ScrollView {
+      ZStack {
+        LinearGradient(gradient: Gradient(colors: [.pink.opacity(0.2), .blue.opacity(0.2), .purple.opacity(0.2)]),
+                       startPoint: .topLeading,
+                       endPoint: .bottomTrailing)
+        .ignoresSafeArea()
         VStack(spacing: 20) {
           photoView
           breedInfoView
         }
         .padding()
         .frame(minHeight: geometry.size.height)
+        .opacity(isDismissing ? 0 : 1)
       }
     }
     .onAppear {
@@ -57,9 +62,7 @@ struct BreedView: View {
     }
     .navigationBarBackButtonHidden(true)
   }
-  
-  // MARK: - Subviews
-  
+    
   private var photoView: some View {
     GeometryReader{ g in
       Group {
@@ -123,7 +126,14 @@ struct BreedView: View {
         .foregroundColor(.primary)
       
       Button("Return to main menu") {
-        path = NavigationPath()
+        withAnimation(.easeInOut(duration: 0.3)) {
+          isDismissing = true
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+          withAnimation(.easeInOut) {
+            path = NavigationPath()
+          }
+        }
       }
       .buttonStyle(.bordered)
     }
@@ -158,9 +168,7 @@ struct BreedView: View {
         .fill(Color.red.opacity(0.05))
     )
   }
-  
-  // MARK: - Actions
-  
+    
   private func identifyBreed() {
     guard let photo else { return }
     
@@ -172,4 +180,3 @@ struct BreedView: View {
     isImageLoading = false
   }
 }
-

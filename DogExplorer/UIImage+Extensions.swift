@@ -11,7 +11,6 @@ import UIKit
 extension UIImage {
   
   func resizeTo(size :CGSize) -> UIImage? {
-    
     UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
     self.draw(in: CGRect(origin: CGPoint.zero, size: size))
     let resizedImage = UIGraphicsGetImageFromCurrentImageContext()!
@@ -20,7 +19,6 @@ extension UIImage {
   }
   
   func toBuffer() -> CVPixelBuffer? {
-    
     let attrs = [kCVPixelBufferCGImageCompatibilityKey: kCFBooleanTrue, kCVPixelBufferCGBitmapContextCompatibilityKey: kCFBooleanTrue] as CFDictionary
     var pixelBuffer : CVPixelBuffer?
     let status = CVPixelBufferCreate(kCFAllocatorDefault, Int(self.size.width), Int(self.size.height), kCVPixelFormatType_32ARGB, attrs, &pixelBuffer)
@@ -44,6 +42,5 @@ extension UIImage {
     
     return pixelBuffer
   }
-  
 }
 

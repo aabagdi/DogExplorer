@@ -8,6 +8,7 @@
 import Foundation
 
 enum NavigationDestination: Hashable {
-    case camera
-    case breedList
+  case camera
+  case breedList
+  case credits
 }

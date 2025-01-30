@@ -31,7 +31,7 @@ struct CameraPreviewView: UIViewRepresentable {
     
     init() {
       super.init(frame: .zero)
-      backgroundColor = .black // Add this to ensure no transparency
+      backgroundColor = .black
     }
     
     required init?(coder: NSCoder) {
