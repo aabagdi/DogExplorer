@@ -11,6 +11,7 @@ import PhotosUI
 struct MainView: View {
   @State private var viewModel = MainViewModel()
   @State private var path = NavigationPath()
+  @State private var camera = CameraModel()
   
   var body: some View {
     NavigationStack(path: $path) {
@@ -37,13 +38,22 @@ struct MainView: View {
           }
         }
         .navigationDestination(for: Data.self) { image in
-          BreedView(photo: image)
+          BreedView(photo: image, path: $path)
+        }
+        Button("Take a photo", systemImage: "camera") {
+          path.append("camera")
+        }
+        .tint(.blue)
+        .controlSize(.large)
+        .buttonStyle(.borderedProminent)
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .navigationDestination(for: String.self) { _ in
+          CameraView(camera: camera, path: $path)
         }
       }
     }
   }
 }
-
 
 #Preview {
   MainView()

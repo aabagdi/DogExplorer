@@ -15,6 +15,8 @@ struct BreedView: View {
   @State private var isImageLoading = false
   @State private var showRetryButton = false
   
+  @Binding var path: NavigationPath
+  
   var body: some View {
     GeometryReader { geometry in
       ScrollView {
@@ -27,6 +29,7 @@ struct BreedView: View {
       }
     }
     .onAppear(perform: identifyBreed)
+    .navigationBarBackButtonHidden(true)
   }
   
   // MARK: - Subviews
@@ -90,7 +93,8 @@ struct BreedView: View {
         .multilineTextAlignment(.center)
         .foregroundColor(.primary)
       
-      Button("Take Another Photo") {
+      Button("Return to main menu") {
+        path = NavigationPath()
       }
       .buttonStyle(.bordered)
     }

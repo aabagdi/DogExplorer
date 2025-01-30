@@ -12,6 +12,8 @@ struct CameraView<CameraModel: Camera>: View {
   @State private var showPhotoConfirmation = false
   @State private var isCapturingPhoto = false
   
+  @Binding var path: NavigationPath
+  
   var body: some View {
     ZStack {
       CameraPreviewView(source: camera.previewSource)
@@ -49,7 +51,7 @@ struct CameraView<CameraModel: Camera>: View {
                 Text("Proceed")
               }
               .navigationDestination(for: String.self) { _ in
-                BreedView(photo: camera.returnPhoto())
+                BreedView(photo: camera.returnPhoto(), path: $path)
               }
             }
           }
