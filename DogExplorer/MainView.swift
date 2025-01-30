@@ -40,15 +40,30 @@ struct MainView: View {
         .navigationDestination(for: Data.self) { image in
           BreedView(photo: image, path: $path)
         }
+        
         Button("Take a photo", systemImage: "camera") {
-          path.append("camera")
+          path.append(NavigationDestination.camera)
         }
         .tint(.blue)
         .controlSize(.large)
         .buttonStyle(.borderedProminent)
         .clipShape(RoundedRectangle(cornerRadius: 10))
-        .navigationDestination(for: String.self) { _ in
-          CameraView(camera: camera, path: $path)
+        
+        Button("Discovered breeds", systemImage: "dog") {
+          path.append(NavigationDestination.breedList)
+        }
+        .tint(.blue)
+        .controlSize(.large)
+        .buttonStyle(.borderedProminent)
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+        
+        .navigationDestination(for: NavigationDestination.self) { destination in
+          switch destination {
+          case .camera:
+            CameraView(camera: camera, path: $path)
+          case .breedList:
+            BreedListView()
+          }
         }
       }
     }

@@ -10,12 +10,27 @@ import SwiftUI
 struct BreedView: View {
   @State var viewModel = BreedViewModel()
   var photo: Data?
+  @AppStorage("breedList") var breedList = Data()
   
   // MARK: - View States
   @State private var isImageLoading = false
   @State private var showRetryButton = false
   
   @Binding var path: NavigationPath
+  
+  private var savedBreeds: [String] {
+    get {
+      if let strings = try? JSONDecoder().decode([String].self, from: breedList) {
+        return strings
+      }
+      return []
+    }
+    set {
+      if let encoded = try? JSONEncoder().encode(newValue) {
+        breedList = encoded
+      }
+    }
+  }
   
   var body: some View {
     GeometryReader { geometry in
@@ -28,28 +43,42 @@ struct BreedView: View {
         .frame(minHeight: geometry.size.height)
       }
     }
-    .onAppear(perform: identifyBreed)
+    .onAppear {
+      identifyBreed()
+    }
+    .onChange(of: viewModel.breed) { _, newBreed in
+      if let newBreed, !savedBreeds.contains(newBreed) {
+        var currentBreeds = savedBreeds
+        currentBreeds.append(newBreed)
+        if let encoded = try? JSONEncoder().encode(currentBreeds) {
+          breedList = encoded
+        }
+      }
+    }
     .navigationBarBackButtonHidden(true)
   }
   
   // MARK: - Subviews
   
   private var photoView: some View {
-    Group {
-      if let photo,
-         let image = UIImage(data: photo) {
-        Image(uiImage: image)
-          .resizable()
-          .aspectRatio(contentMode: .fit)
-          .clipShape(RoundedRectangle(cornerRadius: 16))
-          .shadow(radius: 5)
-          .overlay(
-            RoundedRectangle(cornerRadius: 16)
-              .stroke(Color.gray.opacity(0.2), lineWidth: 1)
-          )
-          .accessibilityLabel("Dog photo")
-      } else {
-        placeholderView
+    GeometryReader{ g in
+      Group {
+        if let photo,
+           let image = UIImage(data: photo) {
+          Image(uiImage: image)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .shadow(radius: 5)
+            .overlay(
+              RoundedRectangle(cornerRadius: 16)
+                .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+            )
+            .frame(width: g.size.width, height: g.size.height * 0.95)
+            .accessibilityLabel("Dog photo")
+        } else {
+          placeholderView
+        }
       }
     }
   }
