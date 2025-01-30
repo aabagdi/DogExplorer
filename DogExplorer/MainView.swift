@@ -10,9 +10,10 @@ import PhotosUI
 
 struct MainView: View {
   @State private var viewModel = MainViewModel()
+  @State private var path = NavigationPath()
   
   var body: some View {
-    NavigationStack {
+    NavigationStack(path: $path) {
       VStack {
         Text("Welcome to Dog Explorer!")
         
@@ -25,7 +26,17 @@ struct MainView: View {
         .controlSize(.large)
         .buttonStyle(.borderedProminent)
         .clipShape(RoundedRectangle(cornerRadius: 10))
-        .navigationDestination(item: $viewModel.selectedImage) { image in
+        .onChange(of: viewModel.photoPickerItem) { _, newItem in
+          Task {
+            await viewModel.setImage(from: newItem)
+          }
+        }
+        .onChange(of: viewModel.selectedImage) { _, newImage in
+          if let newImage {
+            path.append(newImage)
+          }
+        }
+        .navigationDestination(for: Data.self) { image in
           BreedView(photo: image)
         }
       }

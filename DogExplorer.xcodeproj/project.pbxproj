@@ -6,8 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		39B30C212D4B137B009865BF /* Routes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B30C202D4B137B009865BF /* Routes.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		3970B7E22D419B9B004EF3C8 /* DogExplorer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DogExplorer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		39B30C202D4B137B009865BF /* Routes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Routes.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -32,6 +37,7 @@
 		3970B7D92D419B9B004EF3C8 = {
 			isa = PBXGroup;
 			children = (
+				39B30C202D4B137B009865BF /* Routes.swift */,
 				3970B7E42D419B9B004EF3C8 /* DogExplorer */,
 				3970B7E32D419B9B004EF3C8 /* Products */,
 			);
@@ -119,6 +125,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				39B30C212D4B137B009865BF /* Routes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

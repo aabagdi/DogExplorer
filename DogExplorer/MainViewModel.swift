@@ -9,12 +9,13 @@ import Foundation
 import _PhotosUI_SwiftUI
 
 @Observable
+@MainActor
 class MainViewModel {
   var selectedImage: Data?
   var photoPickerItem: PhotosPickerItem?
   private var error: Error?
   
-  private func setImage(from selection: PhotosPickerItem?) async {
+  func setImage(from selection: PhotosPickerItem?) async {
     guard let selection else { return }
     do {
       if let data = try await selection.loadTransferable(type: Data.self) {
