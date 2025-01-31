@@ -27,36 +27,43 @@ struct MainView: View {
           Spacer()
           
           VStack {
+            HStack {
+              LinearGradient(
+                colors: [.red, .purple, .pink, .blue],
+                startPoint: .leading,
+                endPoint: .trailing
+              )
+              .mask(
+                Text("Dog Explorer!")
+                  .font(Font.system(size: 46, weight: .bold))
+                  .multilineTextAlignment(.center)
+              )
+              Text("🐶")
+                .font(Font.system(size: 46, weight: .bold))
+            }
+            Spacer()
             LinearGradient(
               colors: [.red, .purple, .pink, .blue],
               startPoint: .leading,
               endPoint: .trailing
             )
+            .frame(minWidth: 300, minHeight: 300)
             .mask(
-              Text("Dog Explorer!")
-                .font(Font.system(size: 46, weight: .bold))
+              Image(systemName: "dog.fill")
+                .font(.largeTitle)
                 .multilineTextAlignment(.center)
+                .foregroundStyle(.white)
+                .scaleEffect(tapped ? 6.15 : 5.0)
+                .animation(.spring(response: 0.35, dampingFraction: 0.15), value: tapped)
             )
-            
-            Spacer()
-            
-            Text("🐶")
-              .font(.largeTitle)
-              .multilineTextAlignment(.center)
-              .foregroundStyle(.white)
-              .scaleEffect(tapped ? 6.15 : 5.0)
-              .animation(.spring(response: 0.35, dampingFraction: 0.15), value: tapped)
-              .font(.largeTitle)
-              .multilineTextAlignment(.center)
-              .onTapGesture {
-                self.bark.play(sound: "Dog Bark")
+            .onTapGesture {
+              self.bark.play(sound: "Dog Bark")
+              tapped.toggle()
+              Task {
+                try await Task.sleep(nanoseconds: 200_000_000)
                 tapped.toggle()
-                Task {
-                  try await Task.sleep(nanoseconds: 200_000_000)
-                  tapped.toggle()
-                }
               }
-              .frame(maxHeight: .infinity)
+            }
           }
           .padding()
           
