@@ -19,9 +19,13 @@ struct CreditsView: View {
           .padding()
         Text("Dog bark sound effect by crazymonke9 on Freesound.org")
           .padding()
+        Text("App Icon developed with help from [Sarang Pawar](https://www.reddit.com/user/usernameisnotmine/)")
+          .padding()
       }
       .multilineTextAlignment(.center)
     }
+    .navigationTitle("Resource Credits")
+    .navigationBarTitleDisplayMode(.large)
   }
 }
 
