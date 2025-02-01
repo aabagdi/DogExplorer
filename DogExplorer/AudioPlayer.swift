@@ -8,15 +8,15 @@
 import AVFoundation
 
 class AudioPlayer {
-    private var AudioPlayer: AVAudioPlayer!
+    private var audioPlayer: AVAudioPlayer!
     
     func play(sound: String) {
       guard let soundEffect = Bundle.main.url(forResource: sound, withExtension: "mp3") else { return }
-        self.AudioPlayer = try! AVAudioPlayer(contentsOf: soundEffect)
-        self.AudioPlayer.prepareToPlay()
-        self.AudioPlayer.play()
-        try! AVAudioSession.sharedInstance().setCategory(.ambient)
-        try! AVAudioSession.sharedInstance().setActive(true, options: .notifyOthersOnDeactivation)
+        self.audioPlayer = try? AVAudioPlayer(contentsOf: soundEffect)
+        self.audioPlayer.prepareToPlay()
+        self.audioPlayer.play()
+        try? AVAudioSession.sharedInstance().setCategory(.ambient)
+        try? AVAudioSession.sharedInstance().setActive(true, options: .notifyOthersOnDeactivation)
         
     }
 }

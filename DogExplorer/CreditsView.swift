@@ -10,19 +10,62 @@ import SwiftUI
 struct CreditsView: View {
   var body: some View {
     ZStack {
-      LinearGradient(gradient: Gradient(colors: [.pink.opacity(0.2), .blue.opacity(0.2), .purple.opacity(0.2)]),
-                     startPoint: .topLeading,
-                     endPoint: .bottomTrailing)
+      // Background gradient
+      LinearGradient(gradient: Gradient(colors: [
+        Color.pink.opacity(0.2),
+        Color.blue.opacity(0.2),
+        Color.purple.opacity(0.2)
+      ]), startPoint: .topLeading, endPoint: .bottomTrailing)
       .ignoresSafeArea()
-      VStack {
-        Text("Model trained on images from the Stanford Dogs Dataset by Aditya Khosla, Nityananda Jayadevaprakash, Bangpeng Yao and Li Fei-Fei, labeled dog dataset from images.cv and images of my Bichon Frise, Oskar")
-          .padding()
-        Text("Dog bark sound effect by crazymonke9 on Freesound.org")
-          .padding()
-        Text("App Icon developed with help from [Sarang Pawar](https://www.reddit.com/user/usernameisnotmine/)")
-          .padding()
+      
+      ScrollView {
+        VStack(spacing: 24) {
+          // Header section
+          Text("Training Data Sources")
+            .font(.title2)
+            .fontWeight(.bold)
+            .padding(.top)
+          
+          // Dataset credits section
+          VStack(alignment: .leading, spacing: 16) {
+            CreditItem(
+              title: "Stanford Dogs Dataset",
+              detail: "by Aditya Khosla, Nityananda Jayadevaprakash, Bangpeng Yao and Li Fei-Fei"
+            )
+            
+            CreditItem(
+              title: "Labeled Dog Dataset",
+              detail: "from images.cv"
+            )
+            
+            CreditItem(
+              title: "Personal Collection",
+              detail: "Images of my Bichon Frise, Oskar"
+            )
+          }
+          .padding(.horizontal)
+          
+          // Additional resources section
+          VStack(spacing: 16) {
+            Text("Additional Resources")
+              .font(.title3)
+              .fontWeight(.semibold)
+            
+            CreditItem(
+              title: "Sound Effects",
+              detail: "Dog bark sound effect by crazymonke9 on Freesound.org"
+            )
+            
+            CreditItem(
+              title: "App Icon",
+              detail: "Developed with help from Sarang Pawar",
+              link: "https://www.reddit.com/user/usernameisnotmine/"
+            )
+          }
+          .padding(.horizontal)
+        }
+        .padding(.bottom)
       }
-      .multilineTextAlignment(.center)
     }
     .navigationTitle("Resource Credits")
     .navigationBarTitleDisplayMode(.large)
@@ -30,5 +73,7 @@ struct CreditsView: View {
 }
 
 #Preview {
-  CreditsView()
+  NavigationView {
+    CreditsView()
+  }
 }

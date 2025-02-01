@@ -9,9 +9,6 @@ import Foundation
 import AVFoundation
 
 class SystemPreferredCameraObserver: NSObject {
-  
-  private let systemPreferredKeyPath = "systemPreferredCamera"
-  
   let changes: AsyncStream<AVCaptureDevice?>
   private var continuation: AsyncStream<AVCaptureDevice?>.Continuation?
   
@@ -22,20 +19,31 @@ class SystemPreferredCameraObserver: NSObject {
     
     super.init()
     
-    AVCaptureDevice.self.addObserver(self, forKeyPath: systemPreferredKeyPath, options: [.new], context: nil)
+    // For static/class properties, we need to use the traditional KVO approach
+    AVCaptureDevice.addObserver(
+      self,
+      forKeyPath: "systemPreferredCamera",
+      options: [.new],
+      context: nil
+    )
+  }
+  
+  override func observeValue(
+    forKeyPath keyPath: String?,
+    of object: Any?,
+    change: [NSKeyValueChangeKey: Any]?,
+    context: UnsafeMutableRawPointer?
+  ) {
+    if keyPath == "systemPreferredCamera" {
+      let newDevice = change?[.newKey] as? AVCaptureDevice
+      continuation?.yield(newDevice)
+    } else {
+      super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+    }
   }
   
   deinit {
+    AVCaptureDevice.removeObserver(self, forKeyPath: "systemPreferredCamera")
     continuation?.finish()
-  }
-  
-  override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
-    switch keyPath {
-    case systemPreferredKeyPath:
-      let newDevice = change?[.newKey] as? AVCaptureDevice
-      continuation?.yield(newDevice)
-    default:
-      super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-    }
   }
 }

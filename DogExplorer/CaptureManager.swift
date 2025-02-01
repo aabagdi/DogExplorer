@@ -18,7 +18,7 @@ actor CaptureManager {
   nonisolated let previewSource: PreviewSource
   
   private var isSetUp = false
-
+  
   private let captureSession = AVCaptureSession()
   
   private let photoCapture = PhotoCapture()
@@ -33,11 +33,11 @@ actor CaptureManager {
   
   private var rotationCoordinator: AVCaptureDevice.RotationCoordinator!
   private var rotationObservers = [AnyObject]()
-    
+  
   private var delegate = CaptureControlsDelegate()
   
   private var controlsMap = [String: [AVCaptureControl]]()
-    
+  
   private let logger = Logger()
   
   init() {
@@ -199,7 +199,8 @@ actor CaptureManager {
   private func observeSubjectAreaChanges(of device: AVCaptureDevice) {
     subjectAreaChangeTask?.cancel()
     subjectAreaChangeTask = Task {
-      for await _ in NotificationCenter.default.notifications(named: AVCaptureDevice.subjectAreaDidChangeNotification, object: device).compactMap({ _ in true }) {
+      for await _ in NotificationCenter.default.notifications(named: AVCaptureDevice.subjectAreaDidChangeNotification,
+                                                              object: device).compactMap({ _ in true }) {
         try? focusAndExpose(at: CGPoint(x: 0.5, y: 0.5), isUserInitiated: false)
       }
     }
@@ -227,7 +228,7 @@ actor CaptureManager {
     
     device.unlockForConfiguration()
   }
-
+  
   func capturePhoto() async throws -> Data {
     try await photoCapture.capturePhoto()
   }
@@ -263,11 +264,10 @@ actor CaptureManager {
     
     Task {
       for await error in NotificationCenter.default.notifications(named: AVCaptureSession.runtimeErrorNotification)
-        .compactMap({ $0.userInfo?[AVCaptureSessionErrorKey] as? AVError }) {
-        if error.code == .mediaServicesWereReset {
-          if !captureSession.isRunning {
-            captureSession.startRunning()
-          }
+        .compactMap({ $0.userInfo?[AVCaptureSessionErrorKey] as? AVError })
+      where error.code == .mediaServicesWereReset {
+        if !captureSession.isRunning {
+          captureSession.startRunning()
         }
       }
     }

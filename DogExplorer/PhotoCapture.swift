@@ -31,7 +31,6 @@ final class PhotoCapture: OutputService {
     }
   }
   
-  
   private func monitorProgress(of delegate: PhotoCaptureDelegate, isolation: isolated (any Actor)? = #isolation) {
     Task {
       _ = isolation

@@ -14,5 +14,3 @@ enum CameraStatus {
   case running
   case interrupted
 }
-
-

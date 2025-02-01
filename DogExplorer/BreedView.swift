@@ -64,7 +64,7 @@ struct BreedView: View {
   }
     
   private var photoView: some View {
-    GeometryReader{ g in
+    GeometryReader { geo in
       Group {
         if let photo,
            let image = UIImage(data: photo) {
@@ -77,7 +77,7 @@ struct BreedView: View {
               RoundedRectangle(cornerRadius: 16)
                 .stroke(Color.gray.opacity(0.2), lineWidth: 1)
             )
-            .frame(width: g.size.width, height: g.size.height * 0.95)
+            .frame(width: geo.size.width, height: geo.size.height * 0.95)
             .accessibilityLabel("Dog photo")
         } else {
           placeholderView

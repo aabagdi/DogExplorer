@@ -43,7 +43,10 @@ struct CameraPreviewView: UIViewRepresentable {
     }
     
     var previewLayer: AVCaptureVideoPreviewLayer {
-      layer as! AVCaptureVideoPreviewLayer
+      guard let previewLayer = layer as? AVCaptureVideoPreviewLayer else {
+        fatalError("Expected `AVCaptureVideoPreviewLayer` type for layer. Check layerClass implementation.")
+      }
+      return previewLayer
     }
     
     override func layoutSubviews() {
@@ -79,4 +82,3 @@ struct DefaultPreviewSource: PreviewSource {
     target.setSession(session)
   }
 }
-
