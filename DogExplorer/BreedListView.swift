@@ -7,15 +7,23 @@
 
 import Foundation
 import SwiftUI
+import CoreML
 
 struct BreedListView: View {
   @AppStorage("breedList") var breedListData: Data = Data()
+  
+  private var model: DogBreedClassifier?
   
   private var collectedBreeds: [String] {
     if let breeds = try? JSONDecoder().decode([String].self, from: breedListData) {
       return breeds.sorted()
     }
     return []
+  }
+  
+  init() {
+    let config = MLModelConfiguration()
+      self.model = try? DogBreedClassifier(configuration: config)
   }
   
   var body: some View {
@@ -44,7 +52,7 @@ struct BreedListView: View {
         .navigationTitle("Discovered Breeds")
         .navigationBarTitleDisplayMode(.large)
         
-        Text("\(collectedBreeds.count) breeds found out of 122")
+        Text("\(collectedBreeds.count) breeds found out of \(model?.model.modelDescription.classLabels?.count ?? 0)")
           .font(.footnote)
       }
     }
