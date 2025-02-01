@@ -20,7 +20,7 @@ class BreedViewModel {
       let model = try DogBreedClassifier(configuration: config)
       guard let photo,
             let image = UIImage(data: photo),
-            let resized = image.resizeTo(size: CGSize(width: 299, height: 299)),
+            let resized = image.resizeTo(size: CGSize(width: 360, height: 360)),
             let buffer = resized.toBuffer() else { return }
       
       let prediction = try model.prediction(image: buffer)
