@@ -10,14 +10,7 @@ import SwiftUI
 struct CreditsView: View {
   var body: some View {
     ZStack {
-      // Background gradient
-      LinearGradient(gradient: Gradient(colors: [
-        Color.pink.opacity(0.2),
-        Color.blue.opacity(0.2),
-        Color.purple.opacity(0.2)
-      ]), startPoint: .topLeading, endPoint: .bottomTrailing)
-      .ignoresSafeArea()
-      
+      MainGradient()
       ScrollView {
         VStack(spacing: 24) {
           // Header section

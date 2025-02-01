@@ -18,11 +18,7 @@ struct MainView: View {
   var body: some View {
     NavigationStack(path: $path) {
       ZStack {
-        LinearGradient(gradient: Gradient(colors: [.pink.opacity(0.2), .blue.opacity(0.2), .purple.opacity(0.2)]),
-                       startPoint: .topLeading,
-                       endPoint: .bottomTrailing)
-        .ignoresSafeArea()
-        
+        MainGradient()
         VStack {
           Spacer()
           
