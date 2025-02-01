@@ -19,7 +19,6 @@ class SystemPreferredCameraObserver: NSObject {
     
     super.init()
     
-    // For static/class properties, we need to use the traditional KVO approach
     AVCaptureDevice.addObserver(
       self,
       forKeyPath: "systemPreferredCamera",
