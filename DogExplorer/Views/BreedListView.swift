@@ -42,7 +42,7 @@ struct BreedListView: View {
         .navigationTitle("Discovered Breeds")
         .navigationBarTitleDisplayMode(.large)
         
-        Text("\(collectedBreeds.count) breeds found out of 123 🐶❤️")
+        Text("\(collectedBreeds.count) breeds found out of 122 🐶❤️")
           .font(.footnote)
       }
     }
