@@ -32,7 +32,7 @@ struct MainView: View {
                   endPoint: .trailing
                 )
                 .mask(
-                  Text("Dog Explorer!")
+                  Text("DogExplorer!")
                     .font(Font.system(size: geo.size.width * 0.1144278607, weight: .bold))
                     .multilineTextAlignment(.center)
                 )
@@ -98,7 +98,7 @@ struct MainView: View {
             Button("Credits", systemImage: "list.bullet") {
               path.append(NavigationDestination.credits)
             }
-            .buttonStyle(GradientButtonStyle(colors: [.orange, .orange]))
+            .buttonStyle(GradientButtonStyle(colors: [.orange, .blue]))
             .navigationDestination(for: NavigationDestination.self) { destination in
               switch destination {
               case .camera:
@@ -111,10 +111,6 @@ struct MainView: View {
             }
           }
         }
-      }
-      .onAppear {
-        print("Width: \(geo.size.width)")
-        print("Height: \(geo.size.height)")
       }
     }
   }

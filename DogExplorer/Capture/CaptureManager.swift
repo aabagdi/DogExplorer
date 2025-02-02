@@ -28,15 +28,11 @@ actor CaptureManager {
   private var activeVideoInput: AVCaptureDeviceInput?
   
   private let deviceLookup = DeviceLookup()
-  
-  private let systemPreferredCamera = SystemPreferredCameraObserver()
-  
+    
   private var rotationCoordinator: AVCaptureDevice.RotationCoordinator!
   private var rotationObservers = [AnyObject]()
   
   private var delegate = CaptureControlsDelegate()
-  
-  private var controlsMap = [String: [AVCaptureControl]]()
   
   private let logger = Logger()
   
