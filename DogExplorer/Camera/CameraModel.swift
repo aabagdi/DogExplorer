@@ -27,9 +27,7 @@ class CameraModel: Camera {
   private(set) var error: Error?
   
   var previewSource: PreviewSource { captureManager.previewSource }
-  
-  private(set) var isHDRVideoSupported = false
-  
+    
   private let captureManager = CaptureManager()
   
   private var cameraState = CameraState()
