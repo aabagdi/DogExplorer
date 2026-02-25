@@ -9,7 +9,6 @@ import Foundation
 import os
 
 struct CameraState: Codable {
-
   var qualityPrioritization = QualityPrioritization.quality {
     didSet { save() }
   }
